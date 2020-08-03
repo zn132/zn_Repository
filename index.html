@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!---用来填写用户信息-->
+    <input type="text" id="username"><button id="linked">连接</button>
+    <div id="content" style="width: 500px;height: 500px;">
+
+    </div>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+<script>
+    var socket =io();
+    var name = "";
+    //点击连接按钮的时候 我们回向服务器推送一条我们需要连接的请求
+    //()=> 相当于function(){}
+    document.getElementById("linked").addEventListener("click",()=>{
+        let input = document.getElementById("username");
+        if(input.value.trim()===""){
+            alert("用户名禁止为空")
+            return
+        }
+        //如果我们的用户名不为空 推送一条连接请求
+        name = input.value;
+        socket.emit("linked",input.value);
+    })
+
+
+    //监听服务端发来的广播消息 并显示
+    socket.on("brodeCastMsg",(msg)=>{
+        document.getElementById("content").innerHTML=msg+"</br>"
+    })
+    // websocket ajax 的区别
+</script>
+</html>
